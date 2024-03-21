@@ -1,16 +1,13 @@
 package com.animals_back.dao;
 
 import com.animals_back.entity.Animal;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface AnimalDAO {
 
-    public List<Animal> getAllAnimals();
+@Repository
+public interface AnimalDAO extends JpaRepository<Animal, Integer> {
 
-    public void saveAnimal(Animal animal);
-
-    public void deleteAnimal(int id);
-
-    public Animal getAllAboutAnimal(int id);
 }

@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/AnimalShelter
+    username: postgres
+    password: 724036
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+#      ddl-auto: create
+
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
