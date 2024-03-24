@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
 @Data
-public class AnimalNotFoundException extends Exception {
+public class AnimalAlreadyExistException extends Exception {
     private final Integer animalId;
 
     @Override
     public String getMessage() {
-        return String.format("Зверёк с id %d не найден", animalId);
+        return String.format("Зверёк с id %d уже существует", animalId);
     }
 }

@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface AnimalDAO extends JpaRepository<Animal, Integer> {
-
+    Optional<Animal> findAnimalByName(String name);
 }

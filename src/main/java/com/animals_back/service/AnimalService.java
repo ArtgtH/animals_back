@@ -2,10 +2,15 @@ package com.animals_back.service;
 
 import com.animals_back.dao.AnimalDAO;
 import com.animals_back.entity.Animal;
+import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,12 +18,23 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AnimalService {
     private final AnimalDAO animalDAO;
+    private final ObjectMapper objectMapper;
 
     public List<Animal> getAllAnimal() {
         return animalDAO.findAll();
     }
 
-    public void saveAnimal(Animal animal) {
+    @Transactional
+    public void saveAnimal(MultipartFile file, String json) throws IOException, AnimalAlreadyExistException {
+        Animal animal = objectMapper.readValue(json, Animal.class);
+        byte[] image;
+        if (animalDAO.findById(animal.getId()).isPresent()) {
+            throw new AnimalAlreadyExistException(animal.getName());
+        }
+        if (!file.isEmpty()) {
+            image = file.getBytes();
+            animal.setPhoto(image);
+        }
         animalDAO.save(animal);
     }
 
