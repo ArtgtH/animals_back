@@ -25,7 +25,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RESTController {
     private final AnimalService animalService;
-    private final ObjectMapper objectMapper;
 
     @GetMapping("/animals")
     public ResponseEntity<?> getAllAnimals() {
