@@ -1,15 +1,10 @@
 package com.animals_back.controller;
 
 import com.animals_back.entity.Animal;
-import com.animals_back.entity.Shelter;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
 import com.animals_back.service.AnimalService;
-import com.animals_back.service.ShelterService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
