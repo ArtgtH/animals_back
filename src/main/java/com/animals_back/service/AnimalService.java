@@ -27,9 +27,8 @@ public class AnimalService {
     @Transactional
     public void saveAnimal(MultipartFile file, String json) throws IOException, AnimalAlreadyExistException {
         Animal animal = objectMapper.readValue(json, Animal.class);
-        byte[] image;
         if (!file.isEmpty()) {
-            image = file.getBytes();
+            byte[] image = file.getBytes();
             animal.setPhoto(image);
         }
         animalDAO.save(animal);
