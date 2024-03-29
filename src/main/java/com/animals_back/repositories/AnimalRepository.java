@@ -1,6 +1,6 @@
-package com.animals_back.dao;
+package com.animals_back.repositories;
 
-import com.animals_back.entity.Animal;
+import com.animals_back.entities.Animal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +8,6 @@ import java.util.Optional;
 
 
 @Repository
-public interface AnimalDAO extends JpaRepository<Animal, Integer> {
+public interface AnimalRepository extends JpaRepository<Animal, Integer> {
     Optional<Animal> findAnimalByName(String name);
 }

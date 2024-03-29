@@ -1,9 +1,10 @@
-package com.animals_back.controller;
+package com.animals_back.controllers;
 
-import com.animals_back.entity.Animal;
+import com.animals_back.entities.Animal;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
-import com.animals_back.service.AnimalService;
+import com.animals_back.services.AnimalService;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class RESTController {
     }
 
     @PutMapping("save-animal")
-    public ResponseEntity<String> saveAnimal(@RequestParam("image") MultipartFile multipartFile,
+    public ResponseEntity<String> saveAnimal(@Nullable @RequestParam("image") MultipartFile multipartFile,
                                              @RequestParam("json") String json) throws IOException {
         try {
             animalService.saveAnimal(multipartFile, json);

@@ -1,4 +1,4 @@
-package com.animals_back.entity;
+package com.animals_back.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

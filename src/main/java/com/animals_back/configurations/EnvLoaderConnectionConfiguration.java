@@ -1,10 +1,10 @@
-package com.animals_back.config;
+package com.animals_back.configurations;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.Objects;
 
-public class EnvLoaderConnection {
+public class EnvLoaderConnectionConfiguration {
     public static void loadEnvVariables() {
         Dotenv dotenv = Dotenv.configure().filename(".env").load();
         System.setProperty("spring.datasource.url", Objects.requireNonNull(dotenv.get("DB_URL")));

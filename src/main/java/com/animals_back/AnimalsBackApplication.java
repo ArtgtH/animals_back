@@ -1,6 +1,6 @@
 package com.animals_back;
 
-import com.animals_back.config.EnvLoaderConnection;
+import com.animals_back.configurations.EnvLoaderConnectionConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AnimalsBackApplication {
 
     public static void main(String[] args) {
-        EnvLoaderConnection.loadEnvVariables();
+        EnvLoaderConnectionConfiguration.loadEnvVariables();
         SpringApplication.run(AnimalsBackApplication.class, args);
     }
 

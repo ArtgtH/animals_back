@@ -1,4 +1,4 @@
-package com.animals_back.entity;
+package com.animals_back.entities;
 
 
 import jakarta.persistence.*;
@@ -35,6 +35,9 @@ public class Animal {
 
     @Column(name = "height")
     private double height;
+
+    @Column(name = "sex")
+    private String sex;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id")
