@@ -6,13 +6,13 @@ import com.animals_back.exceptions.AnimalNotFoundException;
 import com.animals_back.services.AnimalService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@EnableAspectJAutoProxy
 public class RESTController {
     private final AnimalService animalService;
 
@@ -48,7 +49,7 @@ public class RESTController {
             Optional<Animal> animal = animalService.findAnimalById(id);
             return ResponseEntity.status(HttpStatus.OK).body(animal);
         } catch (AnimalNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body((Map.of("message", exception.getMessage())));
         }
     }
 
