@@ -13,24 +13,22 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class LoggingRest {
-    @Before("com.animals_back.aspects.pointcuts.RestPointcuts.getAnimalById().getAnimalById()")
+    @Before("com.animals_back.aspects.pointcuts.RestPointcuts.getAnimalByIdPointcut().getAnimalById()")
     public void beforeGetAnimalAdvice(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
-        System.out.println("Logging.RestController.getAnimalById: Попытка получить зверя с id "
-                + args[0] + ".");
+        System.out.printf("%s: Попытка вернуть зверя с id %d.\n", joinPoint.getSignature(), (int) args[0]);
     }
 
-    @AfterReturning(pointcut = "com.animals_back.aspects.pointcuts.RestPointcuts.getAnimalById()", returning = "result")
+    @AfterReturning(pointcut = "com.animals_back.aspects.pointcuts.RestPointcuts.getAnimalByIdPointcut()", returning = "result")
     public void afterReturningGetAnimalAdvice(JoinPoint joinPoint, ResponseEntity<?> result) {
         Object[] args = joinPoint.getArgs();
-        Integer animalId = (Integer) args[0];
 
         if (result.getStatusCode() == HttpStatus.OK) {
-            System.out.println(ColorsForLogs.GREEN + "Logging.RestController.getAnimalById: Зверек с id "
-                    + animalId + " был успешно получен!" + ColorsForLogs.RESET);
+            System.out.printf(ColorsForLogs.GREEN + "%s: Зверек с id %d был успешно отправлен в запросе!\n" + ColorsForLogs.RESET,
+                    joinPoint.getSignature(), (int) args[0]);
         } else if (result.getStatusCode() == HttpStatus.NOT_FOUND) {
-            System.out.println(ColorsForLogs.RED + "Logging.RestController.getAnimalById: Зверек с id "
-                    + animalId + " не найден." + ColorsForLogs.RESET);
+            System.out.printf(ColorsForLogs.RED + "%s: Зверек с id %d не найден. Зверек не был передан в запросе.\n" + ColorsForLogs.RESET,
+                    joinPoint.getSignature(), (int) args[0]);
         }
     }
 }
