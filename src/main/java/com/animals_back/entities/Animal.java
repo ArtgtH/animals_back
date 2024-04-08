@@ -39,6 +39,9 @@ public class Animal {
     @Column(name = "sex")
     private String sex;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id")
     private Shelter shelter;

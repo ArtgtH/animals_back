@@ -54,12 +54,12 @@ public class RESTController {
     }
 
     @DeleteMapping("/delete-animal/{id}")
-    public ResponseEntity<String> deleteAnimalById(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> deleteAnimalById(@PathVariable("id") Integer id) {
         try {
             animalService.deleteAnimalById(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("Зверь под id %d был успешно удален", id));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", String.format("Зверь под id %d был успешно удален", id)));
         } catch (AnimalNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body((Map.of("message", exception.getMessage())));
         }
     }
 }
