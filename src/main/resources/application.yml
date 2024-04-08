@@ -1,11 +1,20 @@
+jwt:
+  secret: 134tfgfdg5656dgfdgd4545fsdkgffdkgdfgkdfkmbdfk342i4i24i2gdfngdngndkgdke
+  lifetime: 24h
+
+
 spring:
   datasource:
     url: ${DB_UR}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  main:
+    allow-circular-references: true

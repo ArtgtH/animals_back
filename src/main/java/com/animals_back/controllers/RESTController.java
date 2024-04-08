@@ -9,10 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,7 +33,8 @@ public class RESTController {
         return ResponseEntity.status(HttpStatus.OK).body(animals);
     }
 
-    @PutMapping("save-animal")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/save-animal")
     public ResponseEntity<?> saveAnimal(@Nullable @RequestParam("image") MultipartFile multipartFile,
                                              @RequestParam("json") String json) throws IOException {
         try {
@@ -53,6 +56,7 @@ public class RESTController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete-animal/{id}")
     public ResponseEntity<String> deleteAnimalById(@PathVariable("id") Integer id) {
         try {
@@ -61,5 +65,10 @@ public class RESTController {
         } catch (AnimalNotFoundException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
+    }
+
+    @GetMapping("/info")
+    public String userData(Principal principal) {
+        return principal.getName();
     }
 }
