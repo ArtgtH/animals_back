@@ -65,9 +65,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/info", "api/delete-animal/", "api/save-animal/").authenticated()
-//                        .requestMatchers("api/delete-animal/").hasRole("ADMIN")
-//                        .requestMatchers("api/save-animal/").hasRole("ADMIN")
+                        .requestMatchers("api/info").authenticated()
+                        .requestMatchers("api/delete-animal").hasRole("ADMIN")
+                        .requestMatchers("api/save-animal").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
