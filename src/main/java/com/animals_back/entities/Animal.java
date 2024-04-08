@@ -39,7 +39,7 @@ public class Animal {
     @Column(name = "sex")
     private String sex;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 100000)
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
