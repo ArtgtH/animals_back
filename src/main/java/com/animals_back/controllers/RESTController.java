@@ -56,6 +56,17 @@ public class RESTController {
         }
     }
 
+    @PostMapping("/update-animal/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> updateAnimal(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile multipartFile, @RequestParam("json") String json) throws IOException {
+        try {
+            animalService.updateAnimal(id, multipartFile, json);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Зверек был успешно обновлён!"));
+        } catch (AnimalNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((Map.of("message", e.getMessage())));
+        }
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete-animal/{id}")
     public ResponseEntity<?> deleteAnimalById(@PathVariable("id") Integer id) {
