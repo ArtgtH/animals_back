@@ -58,7 +58,7 @@ public class RESTController {
 
     @PostMapping("/update-animal/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> updateAnimal(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile multipartFile, @RequestParam("json") String json) throws IOException {
+    public ResponseEntity<?> updateAnimal(@PathVariable("id") Integer id, @Nullable @RequestParam("image") MultipartFile multipartFile, @RequestParam("json") String json) throws IOException {
         try {
             animalService.updateAnimal(id, multipartFile, json);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Зверек был успешно обновлён!"));
