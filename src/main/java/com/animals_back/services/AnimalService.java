@@ -27,24 +27,25 @@ public class AnimalService {
     @Transactional
     public void updateAnimal(int id, MultipartFile file, String json) throws IOException, AnimalNotFoundException {
         Animal newAnimal = objectMapper.readValue(json, Animal.class);
-        Optional<Animal> animal = this.findAnimalById(id);
-        if (animal.isPresent()) {
-            animal.get().setName(newAnimal.getName());
-            animal.get().setAge(newAnimal.getAge());
-            animal.get().setSex(newAnimal.getSex());
-            animal.get().setWeight(newAnimal.getWeight());
-            animal.get().setHeight(newAnimal.getHeight());
-            animal.get().setDescription(newAnimal.getDescription());
-            animal.get().setShelter(newAnimal.getShelter());
+        Animal animal = this.findAnimalById(id).orElseThrow(() -> new AnimalNotFoundException(id));
 
-            if (file != null) {
+        animal.setName(newAnimal.getName());
+        animal.setAge(newAnimal.getAge());
+        animal.setSex(newAnimal.getSex());
+        animal.setWeight(newAnimal.getWeight());
+        animal.setHeight(newAnimal.getHeight());
+        animal.setDescription(newAnimal.getDescription());
+        animal.setShelter(newAnimal.getShelter());
+
+        if (file != null) {
+            try {
                 byte[] image = file.getBytes();
-                animal.get().setPhoto(image);
+                animal.setPhoto(image);
+            } catch (IOException exception) {
+                throw new RuntimeException(exception.getMessage());
             }
-            animalRepository.save(animal.get());
-        } else {
-            throw new AnimalNotFoundException(newAnimal.getId());
         }
+        animalRepository.save(animal);
     }
 
     @Transactional

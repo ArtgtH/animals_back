@@ -28,7 +28,7 @@ public class Animal {
     private String name;
 
     @Column(name = "age")
-    private int age;
+    private String age;
 
     @Column(name = "weight")
     private double weight;
