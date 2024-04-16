@@ -4,6 +4,7 @@ import com.animals_back.entities.Animal;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
 import com.animals_back.services.AnimalService;
+import com.animals_back.services.RestService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -25,61 +26,41 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @EnableAspectJAutoProxy
 public class RESTController {
-    private final AnimalService animalService;
+    private final RestService restService;
 
     @GetMapping("/animals")
     public ResponseEntity<?> getAllAnimals() {
-        List<Animal> animals = animalService.getAllAnimal();
-        return ResponseEntity.status(HttpStatus.OK).body(animals);
+        return restService.getAllAnimals();
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/save-animal")
     public ResponseEntity<?> saveAnimal(@Nullable @RequestParam("image") MultipartFile multipartFile,
-                                             @RequestParam("json") String json) throws IOException {
-        try {
-            animalService.saveAnimal(multipartFile, json);
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Зверек был успешно добавлен!"));
-        } catch (AnimalAlreadyExistException exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
-        }
-
+                                        @RequestParam("json") String json) throws IOException {
+        return restService.saveAnimal(multipartFile, json);
     }
 
     @GetMapping("/animal/{id}")
     public ResponseEntity<?> getAnimalById(@PathVariable("id") Integer id) {
-        try {
-            Optional<Animal> animal = animalService.findAnimalById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(animal);
-        } catch (AnimalNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body((Map.of("message", exception.getMessage())));
-        }
+        return restService.getAnimalById(id);
     }
 
     @PostMapping("/update-animal/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> updateAnimal(@PathVariable("id") Integer id, @Nullable @RequestParam("image") MultipartFile multipartFile, @RequestParam("json") String json) throws IOException {
-        try {
-            animalService.updateAnimal(id, multipartFile, json);
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Зверек был успешно обновлён!"));
-        } catch (AnimalNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((Map.of("message", e.getMessage())));
-        }
+    public ResponseEntity<?> updateAnimal(@PathVariable("id") Integer id,
+                                          @Nullable @RequestParam("image") MultipartFile multipartFile,
+                                          @RequestParam("json") String json) throws IOException {
+        return restService.updateAnimal(id, multipartFile, json);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete-animal/{id}")
     public ResponseEntity<?> deleteAnimalById(@PathVariable("id") Integer id) {
-        try {
-            animalService.deleteAnimalById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", String.format("Зверь под id %d был успешно удален", id)));
-        } catch (AnimalNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body((Map.of("message", exception.getMessage())));
-        }
+        return restService.deleteAnimalById(id);
     }
 
     @GetMapping("/info")
     public String userData(Principal principal) {
-        return principal.getName();
+        return restService.userData(principal);
     }
 }

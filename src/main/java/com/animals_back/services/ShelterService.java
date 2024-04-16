@@ -7,13 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Сервис для обработки различных действий с приютами
+ */
 @Service
 @RequiredArgsConstructor
 public class ShelterService {
 
-    private final ShelterRepository shelterRepository;
-
-    public List<Shelter> getAllShelters() {
-        return shelterRepository.findAll();
-    }
 }

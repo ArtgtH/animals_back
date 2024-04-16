@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class LoggingRest {
-    @Before("com.animals_back.aspects.pointcuts.RestPointcuts.getAnimalByIdPointcut().getAnimalById()")
+public class LoggingRestService {
+    @Before("com.animals_back.aspects.pointcuts.RestServicePointcuts.getAnimalByIdPointcut().getAnimalById()")
     public void beforeGetAnimalAdvice(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         System.out.printf("%s: Попытка вернуть зверя с id %d.\n", joinPoint.getSignature(), (int) args[0]);
     }
 
-    @AfterReturning(pointcut = "com.animals_back.aspects.pointcuts.RestPointcuts.getAnimalByIdPointcut()", returning = "result")
+    @AfterReturning(pointcut = "com.animals_back.aspects.pointcuts.RestServicePointcuts.getAnimalByIdPointcut()", returning = "result")
     public void afterReturningGetAnimalAdvice(JoinPoint joinPoint, ResponseEntity<?> result) {
         Object[] args = joinPoint.getArgs();
 
@@ -31,4 +31,17 @@ public class LoggingRest {
                     joinPoint.getSignature(), (int) args[0]);
         }
     }
+    //---------------------------------------------------------------//
+    @Before("com.animals_back.aspects.pointcuts.RestServicePointcuts.getAllAnimalsPointcut()")
+    public void beforeGetAllAnimals(JoinPoint joinPoint) {
+        System.out.printf("%s: Попытка вернуть всех зверей.\n", joinPoint.getSignature());
+    }
+
+    @AfterReturning("com.animals_back.aspects.pointcuts.RestServicePointcuts.getAllAnimalsPointcut()")
+    public void afterReturningGetAllAnimals(JoinPoint joinPoint) {
+        System.out.printf(ColorsForLogs.GREEN + "%s: Все зверьки были успешно отправлены в запросе!\n" + ColorsForLogs.RESET,
+                joinPoint.getSignature());
+    }
+
+    //---------------------------------------------------------------//
 }

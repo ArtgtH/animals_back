@@ -31,10 +31,10 @@ public class Animal {
     private String age;
 
     @Column(name = "weight")
-    private double weight;
+    private String weight;
 
     @Column(name = "height")
-    private double height;
+    private String height;
 
     @Column(name = "sex")
     private String sex;
