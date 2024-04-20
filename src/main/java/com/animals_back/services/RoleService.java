@@ -21,4 +21,5 @@ public class RoleService {
     public Role getUserRole() {
         return roleRepository.findByName("ROLE_USER").orElseThrow(RuntimeException::new);
     }
+//    public Role getAdminRole() {return roleRepository.findByName("ADMIN_ROLE").orElseThrow(RuntimeException::new);}
 }

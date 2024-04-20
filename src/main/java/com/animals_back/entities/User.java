@@ -26,6 +26,14 @@ public class User {
 
     @ManyToMany
     @JoinTable(
+            name = "users_animals",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "animal_id")
+    )
+    private Collection<Animal> animals;
+
+    @ManyToMany
+    @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")

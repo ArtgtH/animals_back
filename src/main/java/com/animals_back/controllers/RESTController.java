@@ -1,14 +1,9 @@
 package com.animals_back.controllers;
 
-import com.animals_back.entities.Animal;
-import com.animals_back.exceptions.AnimalAlreadyExistException;
-import com.animals_back.exceptions.AnimalNotFoundException;
-import com.animals_back.services.AnimalService;
 import com.animals_back.services.RestService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController

@@ -4,11 +4,10 @@ package com.animals_back.services;
 import com.animals_back.DTO.JwtRequest;
 import com.animals_back.DTO.JwtResponse;
 import com.animals_back.DTO.RegistrationUserDTO;
-import com.animals_back.DTO.UserDTO;
-import com.animals_back.entities.User;
 import com.animals_back.exceptions.AppError;
 import com.animals_back.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,7 +42,7 @@ public class AuthService {
         if (userService.findByUsername(registrationUserDTO.getUsername()).isPresent()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с таким именем уже существует"), HttpStatus.BAD_REQUEST);
         }
-        User user = userService.createUser(registrationUserDTO);
-        return ResponseEntity.ok(new UserDTO(user.getId(), user.getUsername(), user.getEmail()));
+        userService.createUser(registrationUserDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Пользователь был упешно создан!"));
     }
 }
