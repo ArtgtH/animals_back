@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- * Сервис для обработки различных действий со ролями
+ * Сервис для обработки различных действий с ролями
  */
 @Service
 @RequiredArgsConstructor
@@ -18,8 +18,15 @@ public class RoleService {
      * Метод находит роль ROLE_USER в базы данных
      * @return - Role - ROLE_USER
      */
-    public Role getUserRole() {
-        return roleRepository.findByName("ROLE_USER").orElseThrow(RuntimeException::new);
-    }
-//    public Role getAdminRole() {return roleRepository.findByName("ADMIN_ROLE").orElseThrow(RuntimeException::new);}
+    public Role getUserRole() {return roleRepository.findByName("ROLE_USER").orElseThrow(RuntimeException::new);}
+    /**
+     * Метод находит роль ROLE_USER в базы данных
+     * @return - Role - ROLE_ADMIN
+     */
+    public Role getAdminRole() {return roleRepository.findByName("ROLE_ADMIN").orElseThrow(RuntimeException::new);}
+    /**
+     * Метод находит роль ROLE_USER в базы данных
+     * @return - Role - ROLE_SUPER_ADMIN
+     */
+    public Role getSuperAdminRole() {return roleRepository.findByName("ROLE_SUPER_ADMIN").orElseThrow(RuntimeException::new);}
 }
