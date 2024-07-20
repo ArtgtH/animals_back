@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,7 +64,9 @@ public class RestService {
         }
     }
 
-    public String userData(Principal principal) {
-        return principal.getName();
+    public Map<String, String> userData(Principal principal) {
+        Map<String, String> response = new HashMap<>();
+        response.put("username", principal.getName());
+        return response;
     }
 }
