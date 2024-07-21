@@ -58,6 +58,7 @@ public class RESTController {
         return restService.userData(principal);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/add-new-shelter")
     public ResponseEntity<?> addNewShelter(@RequestBody AddNewShelterDTO addNewShelterDTO) {
         return restService.addNewShelter(addNewShelterDTO);
