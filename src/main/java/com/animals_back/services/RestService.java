@@ -47,13 +47,12 @@ public class RestService {
                         .sex(animal.getSex())
                         .description(animal.getDescription())
                         .photo(animal.getPhoto())
-                        // Оставлено закомментированным, так как данные приюта могут быть необязательными
-                        // .shelter(ShelterDTO.builder()
-                        //         .id(animal.getShelter().getId())
-                        //         .name(animal.getShelter().getName())
-                        //         .phone(animal.getShelter().getTelephone())
-                        //         .address(animal.getShelter().getAddress())
-                        //         .build())
+                         .shelter(ShelterDTO.builder()
+                                 .id(animal.getShelter().getId())
+                                 .name(animal.getShelter().getName())
+                                 .phone(animal.getShelter().getTelephone())
+                                 .address(animal.getShelter().getAddress())
+                                 .build())
                         .build())
                 .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(animalDTOs);
@@ -145,5 +144,10 @@ public class RestService {
     public ResponseEntity<?> addNewShelter(AddNewShelterDTO addNewShelterDTO) {
         shelterService.saveShelter(addNewShelterDTO);
         return ResponseEntity.ok().body(Map.of("message", "Новый приют успешно добавлен!"));
+    }
+
+    public ResponseEntity<?> getAllShelters() {
+        List<Shelter> shelters = shelterService.getAllShelters();
+        return ResponseEntity.ok().body(shelters);
     }
 }

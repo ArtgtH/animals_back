@@ -44,7 +44,7 @@ public class Animal {
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shelter_id"/*, nullable = false*/)
+    @JoinColumn(name = "shelter_id", nullable = false)
     @JsonBackReference
     private Shelter shelter;
 }

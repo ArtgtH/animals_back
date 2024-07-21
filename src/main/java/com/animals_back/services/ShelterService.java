@@ -29,4 +29,8 @@ public class ShelterService {
         shelter.setTelephone(addNewShelterDTO.getPhone());
         return shelterRepository.save(shelter);
     }
+
+    public List<Shelter> getAllShelters() {
+        return shelterRepository.findAll();
+    }
 }

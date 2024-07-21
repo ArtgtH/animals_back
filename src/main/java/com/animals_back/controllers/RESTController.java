@@ -1,6 +1,7 @@
 package com.animals_back.controllers;
 
 import com.animals_back.DTO.AddNewShelterDTO;
+import com.animals_back.DTO.ShelterDTO;
 import com.animals_back.services.RestService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +63,11 @@ public class RESTController {
     @PutMapping("/add-new-shelter")
     public ResponseEntity<?> addNewShelter(@RequestBody AddNewShelterDTO addNewShelterDTO) {
         return restService.addNewShelter(addNewShelterDTO);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/shelters")
+    public ResponseEntity<?> getAllShelters() {
+        return restService.getAllShelters();
     }
 }
