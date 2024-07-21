@@ -17,6 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Сервис для аутентификации и регистрации пользователей
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -24,6 +27,12 @@ public class AuthService {
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * Метод для создания токена аутентификации
+     *
+     * @param authRequest запрос с данными для аутентификации (имя пользователя и пароль)
+     * @return ответ с токеном или ошибкой аутентификации
+     */
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -35,6 +44,12 @@ public class AuthService {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    /**
+     * Метод для создания нового пользователя
+     *
+     * @param registrationUserDTO данные для регистрации нового пользователя
+     * @return ответ с успешным сообщением или ошибкой регистрации
+     */
     public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDTO registrationUserDTO) {
         if (!registrationUserDTO.getPassword().equals(registrationUserDTO.getConfirmedPassword())) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
@@ -43,6 +58,6 @@ public class AuthService {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с таким именем уже существует"), HttpStatus.BAD_REQUEST);
         }
         userService.createUser(registrationUserDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Пользователь был упешно создан!"));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Пользователь был успешно создан!"));
     }
 }

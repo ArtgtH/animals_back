@@ -29,7 +29,7 @@ public class Shelter {
     @Column(name = "telephone")
     private String telephone;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shelter", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shelter", fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private List<Animal> animals;
 }
