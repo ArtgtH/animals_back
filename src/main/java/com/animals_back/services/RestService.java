@@ -1,8 +1,10 @@
 package com.animals_back.services;
 
+import com.animals_back.DTO.AddNewShelterDTO;
 import com.animals_back.DTO.AnimalDTO;
 import com.animals_back.DTO.ShelterDTO;
 import com.animals_back.entities.Animal;
+import com.animals_back.entities.Shelter;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class RestService {
     private final AnimalService animalService;
+    private final ShelterService shelterService;
 
     public ResponseEntity<?> getAllAnimals() {
         List<Animal> animals = animalService.getAllAnimals();
@@ -89,5 +92,10 @@ public class RestService {
         Map<String, String> response = new HashMap<>();
         response.put("username", principal.getName());
         return response;
+    }
+
+    public ResponseEntity<?> addNewShelter(AddNewShelterDTO addNewShelterDTO) {
+        shelterService.saveShelter(addNewShelterDTO);
+        return ResponseEntity.ok().body(Map.of("message", "Новый приют успешно добавлен!"));
     }
 }
