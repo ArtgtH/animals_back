@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -51,8 +52,8 @@ public class RESTController {
         return restService.deleteAnimalById(id);
     }
 
-    @GetMapping("/info")
-    public String userData(Principal principal) {
+    @GetMapping("/get-user-data")
+    public Map<String, String> userData(Principal principal) {
         return restService.userData(principal);
     }
 }

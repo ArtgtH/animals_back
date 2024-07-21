@@ -1,5 +1,7 @@
 package com.animals_back.services;
 
+import com.animals_back.DTO.AnimalDTO;
+import com.animals_back.DTO.ShelterDTO;
 import com.animals_back.entities.Animal;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
@@ -11,9 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +26,25 @@ public class RestService {
 
     public ResponseEntity<?> getAllAnimals() {
         List<Animal> animals = animalService.getAllAnimals();
-        return ResponseEntity.status(HttpStatus.OK).body(animals);
+        List<AnimalDTO> animalDTOs = animals.stream()
+                .map(animal -> AnimalDTO.builder()
+                        .id(animal.getId())
+                        .name(animal.getName())
+                        .age(animal.getAge())
+                        .weight(animal.getWeight())
+                        .height(animal.getHeight())
+                        .sex(animal.getSex())
+                        .description(animal.getDescription())
+                        .photo(animal.getPhoto())
+                        .shelter(ShelterDTO.builder()
+                                .id(animal.getShelter().getId())
+                                .name(animal.getShelter().getName())
+                                .phone(animal.getShelter().getTelephone())
+                                .address(animal.getShelter().getAddress())
+                                .build())
+                        .build())
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(animalDTOs);
     }
 
     public ResponseEntity<?> saveAnimal(MultipartFile multipartFile,
@@ -63,7 +85,9 @@ public class RestService {
         }
     }
 
-    public String userData(Principal principal) {
-        return principal.getName();
+    public Map<String, String> userData(Principal principal) {
+        Map<String, String> response = new HashMap<>();
+        response.put("username", principal.getName());
+        return response;
     }
 }
