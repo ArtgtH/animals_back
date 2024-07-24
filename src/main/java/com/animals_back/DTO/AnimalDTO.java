@@ -16,7 +16,7 @@ public class AnimalDTO {
     private String weight;
     private String height;
     private String sex;
-    private byte[] photo;
+    private String photoPath;
     private String description;
     private ShelterDTO shelter;
 }

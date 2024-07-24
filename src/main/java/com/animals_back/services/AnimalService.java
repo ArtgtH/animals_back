@@ -1,20 +1,25 @@
 package com.animals_back.services;
 
-import com.animals_back.DTO.AnimalDTO;
-import com.animals_back.DTO.CreateNewAnimalDTO;
+import com.animals_back.DTO.CreateAndUpdateNewAnimalDTO;
 import com.animals_back.entities.Shelter;
 import com.animals_back.repositories.AnimalRepository;
 import com.animals_back.entities.Animal;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
 import com.animals_back.repositories.ShelterRepository;
+import com.animals_back.utils.SaveFileUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,19 +53,20 @@ public class AnimalService {
      */
     @Transactional
     public void updateAnimal(int id, MultipartFile file, String json) throws IOException, AnimalNotFoundException {
-        Animal newAnimal = objectMapper.readValue(json, Animal.class);
+        CreateAndUpdateNewAnimalDTO animalDTO = objectMapper.readValue(json, CreateAndUpdateNewAnimalDTO.class);
+        Optional<Shelter> shelter = shelterRepository.findById(animalDTO.getShelterId());
         Animal animal = this.findAnimalById(id).orElseThrow(() -> new AnimalNotFoundException(id));
-        animal.setName(newAnimal.getName());
-        animal.setAge(newAnimal.getAge());
-        animal.setSex(newAnimal.getSex());
-        animal.setWeight(newAnimal.getWeight());
-        animal.setHeight(newAnimal.getHeight());
-        animal.setDescription(newAnimal.getDescription());
-        animal.setShelter(newAnimal.getShelter());
+        animal.setName(animalDTO.getName());
+        animal.setAge(animalDTO.getAge());
+        animal.setSex(animalDTO.getSex());
+        animal.setWeight(animalDTO.getWeight());
+        animal.setHeight(animalDTO.getHeight());
+        animal.setDescription(animalDTO.getDescription());
+        animal.setShelter(shelter.get());
 
         if (file != null) {
-            byte[] image = file.getBytes();
-            animal.setPhoto(image);
+            String filePath = SaveFileUtils.saveFile(file);
+            animal.setPhotoPath(filePath);
         }
         animalRepository.save(animal);
     }
@@ -75,17 +81,23 @@ public class AnimalService {
      */
     @Transactional
     public void saveAnimal(MultipartFile file, String json) throws IOException, AnimalAlreadyExistException {
-        CreateNewAnimalDTO animalDTO = objectMapper.readValue(json, CreateNewAnimalDTO.class);
+        CreateAndUpdateNewAnimalDTO animalDTO = objectMapper.readValue(json, CreateAndUpdateNewAnimalDTO.class);
         Animal animal = new Animal();
         Optional<Shelter> shelter = shelterRepository.findById(animalDTO.getShelterId());
-        if (file != null) {
-            byte[] image = file.getBytes();
-            animal.setPhoto(image);
+
+        if (!shelter.isPresent()) {
+            throw new IllegalArgumentException("Shelter with ID " + animalDTO.getShelterId() + " not found");
         }
+
+        if (file != null) {
+            String filePath =  SaveFileUtils.saveFile(file);
+            animal.setPhotoPath(filePath);
+        }
+
         animal.setName(animalDTO.getName());
         animal.setAge(animalDTO.getAge());
         animal.setDescription(animalDTO.getDescription());
-        animal.setSex(animalDTO.getDescription());
+        animal.setSex(animalDTO.getSex());
         animal.setWeight(animalDTO.getWeight());
         animal.setHeight(animalDTO.getHeight());
         animal.setShelter(shelter.get());

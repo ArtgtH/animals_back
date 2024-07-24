@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateNewAnimalDTO {
+public class CreateAndUpdateNewAnimalDTO {
     private String name;
     private String age;
     private String weight;

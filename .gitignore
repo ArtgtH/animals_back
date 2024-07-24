@@ -36,3 +36,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Игнорирование каталога static и его содержимого
+**/src/main/resources/static/
