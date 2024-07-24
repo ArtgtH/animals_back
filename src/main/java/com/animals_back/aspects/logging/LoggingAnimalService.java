@@ -33,16 +33,16 @@ public class LoggingAnimalService {
 
     //---------------------------------------------------------------//
 
-    @Before("com.animals_back.aspects.pointcuts.AnimalServicePointcuts.getAllAnimalsPointcut()")
-    public void beforeGetAllAnimals(JoinPoint joinPoint) {
-        System.out.printf("%s: Попытка взять всех зверей из базы.\n", joinPoint.getSignature());
-    }
-
-    @AfterReturning("com.animals_back.aspects.pointcuts.AnimalServicePointcuts.getAllAnimalsPointcut()")
-    public void afterReturningGetAllAnimals(JoinPoint joinPoint) {
-        System.out.printf(ColorsForLogs.GREEN + "%s: Все зверьки были успешно получены из базы и переданы дальше!\n" + ColorsForLogs.RESET,
-                joinPoint.getSignature());
-    }
+//    @Before("com.animals_back.aspects.pointcuts.AnimalServicePointcuts.getAllAnimalsPointcut()")
+//    public void beforeGetAllAnimals(JoinPoint joinPoint) {
+//        System.out.printf("%s: Попытка взять всех зверей из базы.\n", joinPoint.getSignature());
+//    }
+//
+//    @AfterReturning("com.animals_back.aspects.pointcuts.AnimalServicePointcuts.getAllAnimalsPointcut()")
+//    public void afterReturningGetAllAnimals(JoinPoint joinPoint) {
+//        System.out.printf(ColorsForLogs.GREEN + "%s: Все зверьки были успешно получены из базы и переданы дальше!\n" + ColorsForLogs.RESET,
+//                joinPoint.getSignature());
+//    }
 
     //---------------------------------------------------------------//
 }

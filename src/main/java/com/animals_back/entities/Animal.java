@@ -1,6 +1,7 @@
 package com.animals_back.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,8 @@ public class Animal {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "photo")
-    @Lob
-    private byte[] photo;
+    @Column(name = "photo_path")
+    private String photoPath;
 
     @Column(name = "name")
     private String name;
@@ -42,8 +42,9 @@ public class Animal {
     @Column(name = "description", length = 100000)
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shelter_id")
+    @ManyToOne
+    @JoinColumn(name = "shelter_id", nullable = false)
+    @JsonBackReference
     private Shelter shelter;
 }
 
