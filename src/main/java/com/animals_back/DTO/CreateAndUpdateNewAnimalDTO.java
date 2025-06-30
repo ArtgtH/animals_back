@@ -19,4 +19,5 @@ public class CreateAndUpdateNewAnimalDTO {
     private byte[] photo;
     private String description;
     private Integer shelterId;
+    private Long animalTypeId;
 }

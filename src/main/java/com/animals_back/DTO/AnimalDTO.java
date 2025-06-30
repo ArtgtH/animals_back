@@ -19,4 +19,5 @@ public class AnimalDTO {
     private String photoPath;
     private String description;
     private ShelterDTO shelter;
+    private AnimalTypeDto animalType;
 }

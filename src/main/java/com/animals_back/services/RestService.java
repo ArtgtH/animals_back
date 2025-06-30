@@ -1,9 +1,8 @@
 package com.animals_back.services;
 
-import com.animals_back.DTO.AddNewShelterDTO;
-import com.animals_back.DTO.AnimalDTO;
-import com.animals_back.DTO.ShelterDTO;
+import com.animals_back.DTO.*;
 import com.animals_back.entities.Animal;
+import com.animals_back.entities.AnimalType;
 import com.animals_back.entities.Shelter;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
@@ -30,6 +29,7 @@ import java.util.stream.Collectors;
 public class RestService {
     private final AnimalService animalService;
     private final ShelterService shelterService;
+    private final AnimalTypeService animalTypeService;
 
     /**
      * Метод для получения списка всех животных.
@@ -54,6 +54,11 @@ public class RestService {
                                         .name(animal.getShelter().getName())
                                         .phone(animal.getShelter().getTelephone())
                                         .address(animal.getShelter().getAddress())
+                                        .build())
+                                .animalType(AnimalTypeDto
+                                        .builder()
+                                        .id(animal.getAnimalType().getId())
+                                        .name(animal.getAnimalType().getName())
                                         .build())
                                 .build()
                 )
@@ -168,5 +173,21 @@ public class RestService {
     public ResponseEntity<?> getAllShelters() {
         List<Shelter> shelters = shelterService.getAllShelters();
         return ResponseEntity.ok().body(shelters);
+    }
+
+    /**
+     * Метод для добавления нового вида зверушки.
+     *
+     * @param addNewAnimalTypeDto объект с данными нового вида зверушки.
+     * @return ResponseEntity с сообщением об успешном добавлении вида зверушки.
+     */
+    public ResponseEntity<?> addNewAnimalType(AddNewAnimalTypeDto addNewAnimalTypeDto) {
+        animalTypeService.saveAnimalType(addNewAnimalTypeDto);
+        return ResponseEntity.ok().body(Map.of("message", "Новый тип зверушки успешно добавлен!"));
+    }
+
+    public ResponseEntity<?> getAllAnimalTypes() {
+        List<AnimalType> animalTypes = animalTypeService.getAllAnimalType();
+        return ResponseEntity.ok().body(animalTypes);
     }
 }

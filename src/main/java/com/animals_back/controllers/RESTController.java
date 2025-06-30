@@ -1,5 +1,6 @@
 package com.animals_back.controllers;
 
+import com.animals_back.DTO.AddNewAnimalTypeDto;
 import com.animals_back.DTO.AddNewShelterDTO;
 import com.animals_back.DTO.ShelterDTO;
 import com.animals_back.services.RestService;
@@ -69,5 +70,17 @@ public class RESTController {
     @GetMapping("/shelters")
     public ResponseEntity<?> getAllShelters() {
         return restService.getAllShelters();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/add-new-animal-type")
+    public ResponseEntity<?> addNewAnimalTyper(@RequestBody AddNewAnimalTypeDto addNewAnimalTypeDto) {
+        return restService.addNewAnimalType(addNewAnimalTypeDto);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/animal-types")
+    public ResponseEntity<?> getAllAnimalTypes() {
+        return restService.getAllAnimalTypes();
     }
 }

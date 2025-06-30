@@ -1,11 +1,13 @@
 package com.animals_back.services;
 
 import com.animals_back.DTO.CreateAndUpdateNewAnimalDTO;
+import com.animals_back.entities.AnimalType;
 import com.animals_back.entities.Shelter;
 import com.animals_back.repositories.AnimalRepository;
 import com.animals_back.entities.Animal;
 import com.animals_back.exceptions.AnimalAlreadyExistException;
 import com.animals_back.exceptions.AnimalNotFoundException;
+import com.animals_back.repositories.AnimalTypeRepository;
 import com.animals_back.repositories.ShelterRepository;
 import com.animals_back.utils.SaveFileUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +34,7 @@ public class AnimalService {
     private final AnimalRepository animalRepository;
     private final ObjectMapper objectMapper;
     private final ShelterRepository shelterRepository;
+    private final AnimalTypeRepository animalTypeRepository;
 
     /**
      * Метод для поиска зверей в базе данных
@@ -55,7 +58,7 @@ public class AnimalService {
     public void updateAnimal(int id, MultipartFile file, String json) throws IOException, AnimalNotFoundException {
         CreateAndUpdateNewAnimalDTO animalDTO = objectMapper.readValue(json, CreateAndUpdateNewAnimalDTO.class);
         Optional<Shelter> shelter = shelterRepository.findById(animalDTO.getShelterId());
-        Animal animal = this.findAnimalById(id).orElseThrow(() -> new AnimalNotFoundException(id));
+        Animal animal = animalRepository.findById(id).orElseThrow(() -> new AnimalNotFoundException(id));
         animal.setName(animalDTO.getName());
         animal.setAge(animalDTO.getAge());
         animal.setSex(animalDTO.getSex());
@@ -84,9 +87,13 @@ public class AnimalService {
         CreateAndUpdateNewAnimalDTO animalDTO = objectMapper.readValue(json, CreateAndUpdateNewAnimalDTO.class);
         Animal animal = new Animal();
         Optional<Shelter> shelter = shelterRepository.findById(animalDTO.getShelterId());
+        Optional<AnimalType> animalType = animalTypeRepository.findById(animalDTO.getAnimalTypeId());
 
-        if (!shelter.isPresent()) {
+        if (shelter.isEmpty()) {
             throw new IllegalArgumentException("Shelter with ID " + animalDTO.getShelterId() + " not found");
+        }
+        if (animalType.isEmpty()) {
+            throw new IllegalArgumentException("Animal type with ID " + animalDTO.getAnimalTypeId() + " not found");
         }
 
         if (file != null) {
@@ -101,6 +108,7 @@ public class AnimalService {
         animal.setWeight(animalDTO.getWeight());
         animal.setHeight(animalDTO.getHeight());
         animal.setShelter(shelter.get());
+        animal.setAnimalType(animalType.get());
         animalRepository.save(animal);
     }
 

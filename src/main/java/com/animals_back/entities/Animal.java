@@ -46,5 +46,10 @@ public class Animal {
     @JoinColumn(name = "shelter_id", nullable = false)
     @JsonBackReference
     private Shelter shelter;
+
+    @ManyToOne
+    @JoinColumn(name = "animal_type_id", nullable = false)
+    @JsonBackReference
+    private AnimalType animalType;
 }
 
